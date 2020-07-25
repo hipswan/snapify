@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snapify/models/user.dart';
-
+import 'package:snapify/pages/activity_feed.dart';
 import 'package:snapify/pages/comments.dart';
 import 'package:snapify/pages/home.dart';
 import 'package:snapify/widgets/custom_image.dart';
@@ -109,7 +109,7 @@ class _PostState extends State<Post> {
             backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
-            onTap: () {},
+            onTap: () => showProfile(context, profileId: user.id),
             child: Text(
               user.username,
               style: TextStyle(
@@ -171,7 +171,16 @@ class _PostState extends State<Post> {
     // delete uploaded image for thep ost
     storageRef.child("post_$postId.jpg").delete();
     // then delete all activity feed notifications
-
+    QuerySnapshot activityFeedSnapshot = await activityFeedRef
+        .document(ownerId)
+        .collection("feedItems")
+        .where('postId', isEqualTo: postId)
+        .getDocuments();
+    activityFeedSnapshot.documents.forEach((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
     // then delete all comments
     QuerySnapshot commentsSnapshot = await commentsRef
         .document(postId)
@@ -223,12 +232,37 @@ class _PostState extends State<Post> {
   addLikeToActivityFeed() {
     // add a notification to the postOwner's activity feed only if comment made by OTHER user (to avoid getting notification for our own like)
     bool isNotPostOwner = currentUserId != ownerId;
-    if (isNotPostOwner) {}
+    if (isNotPostOwner) {
+      activityFeedRef
+          .document(ownerId)
+          .collection("feedItems")
+          .document(postId)
+          .setData({
+        "type": "like",
+        "username": currentUser.username,
+        "userId": currentUser.id,
+        "userProfileImg": currentUser.photoUrl,
+        "postId": postId,
+        "mediaUrl": mediaUrl,
+        "timestamp": timestamp,
+      });
+    }
   }
 
   removeLikeFromActivityFeed() {
     bool isNotPostOwner = currentUserId != ownerId;
-    if (isNotPostOwner) {}
+    if (isNotPostOwner) {
+      activityFeedRef
+          .document(ownerId)
+          .collection("feedItems")
+          .document(postId)
+          .get()
+          .then((doc) {
+        if (doc.exists) {
+          doc.reference.delete();
+        }
+      });
+    }
   }
 
   buildPostImage() {
@@ -244,7 +278,7 @@ class _PostState extends State<Post> {
                   tween: Tween(begin: 0.8, end: 1.4),
                   curve: Curves.elasticOut,
                   cycles: 0,
-                  builder: (context, anim, _) => Transform.scale(
+                  builder: (contexr, anim, _) => Transform.scale(
                     scale: anim.value,
                     child: Icon(
                       Icons.favorite,

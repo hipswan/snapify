@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:snapify/models/user.dart';
+import 'package:snapify/pages/activity_feed.dart';
 import 'package:snapify/pages/home.dart';
 import 'package:snapify/widgets/progress.dart';
 
@@ -125,7 +126,9 @@ class UserResult extends StatelessWidget {
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              showProfile(context, profileId: user.id);
+            },
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.grey,

@@ -5,15 +5,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:snapify/models/user.dart';
+import 'package:snapify/pages/activity_feed.dart';
 import 'package:snapify/pages/create_account.dart';
 import 'package:snapify/pages/profile.dart';
 import 'package:snapify/pages/search.dart';
+import 'package:snapify/pages/timeline.dart';
 import 'package:snapify/pages/upload.dart';
 
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final usersRef = Firestore.instance.collection('users');
 final postsRef = Firestore.instance.collection('posts');
 final commentsRef = Firestore.instance.collection('comments');
+final activityFeedRef = Firestore.instance.collection('feed');
+final followersRef = Firestore.instance.collection('followers');
+final followingRef = Firestore.instance.collection('following');
+final timelineRef = Firestore.instance.collection('timeline');
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final DateTime timestamp = DateTime.now();
 User currentUser;
@@ -104,7 +110,11 @@ class _HomeState extends State<Home> {
         "timestamp": timestamp
       });
       // make new user their own follower (to include their posts in their timeline)
-
+      await followersRef
+          .document(user.id)
+          .collection('userFollowers')
+          .document(user.id)
+          .setData({});
       doc = await usersRef.document(user.id).get();
     }
 
@@ -124,6 +134,8 @@ class _HomeState extends State<Home> {
       key: _scaffoldKey,
       body: PageView(
         children: <Widget>[
+          Timeline(currentUser: currentUser),
+          ActivityFeed(),
           Upload(currentUser: currentUser),
           Search(),
           Profile(profileId: currentUser?.id),
