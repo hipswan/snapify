@@ -117,11 +117,38 @@ class _HomeState extends State<Home> {
     googleSignIn.signOut();
   }
 
-  RaisedButton buildAuthScreen() {
-    return RaisedButton(
-      child: Text('Logout'),
-      onPressed: logout,
+  Scaffold buildAuthScreen() {
+    return Scaffold(
+      key: _scaffoldKey,
+      body: PageView(
+        children: <Widget>[
+          Upload(currentUser: currentUser),
+        ],
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+          currentIndex: pageIndex,
+          onTap: onTap,
+          activeColor: Theme.of(context).primaryColor,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.whatshot)),
+            BottomNavigationBarItem(icon: Icon(Icons.notifications_active)),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.photo_camera,
+                size: 35.0,
+              ),
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.search)),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle)),
+          ]),
     );
+    // return RaisedButton(
+    //   child: Text('Logout'),
+    //   onPressed: logout,
+    // );
   }
 
   Scaffold buildUnAuthScreen() {
