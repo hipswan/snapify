@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:snapify/models/user.dart';
 import 'package:snapify/pages/create_account.dart';
+import 'package:snapify/pages/upload.dart';
 
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final usersRef = Firestore.instance.collection('users');
+final postsRef = Firestore.instance.collection('posts');
+final commentsRef = Firestore.instance.collection('comments');
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final DateTime timestamp = DateTime.now();
 User currentUser;
@@ -17,11 +22,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAuth = false;
+  PageController pageController;
+  int pageIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
+
     // Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
@@ -37,6 +47,12 @@ class _HomeState extends State<Home> {
     });
   }
 
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   handleSignIn(GoogleSignInAccount account) async {
     if (account != null) {
       print('User logged in as $account');
@@ -49,6 +65,20 @@ class _HomeState extends State<Home> {
         isAuth = false;
       });
     }
+  }
+
+  onPageChanged(int pageIndex) {
+    setState(() {
+      this.pageIndex = pageIndex;
+    });
+  }
+
+  onTap(int pageIndex) {
+    pageController.animateToPage(
+      pageIndex,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   createUserInFirestore() async {
@@ -87,50 +117,10 @@ class _HomeState extends State<Home> {
     googleSignIn.signOut();
   }
 
-  Scaffold buildAuthScreen() {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.of(context).accentColor,
-              Theme.of(context).primaryColor,
-            ],
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Logout',
-              style: TextStyle(
-                fontFamily: "Signatra",
-                fontSize: 90.0,
-                color: Colors.white,
-              ),
-            ),
-            GestureDetector(
-              onTap: logout,
-              child: Container(
-                width: 260.0,
-                height: 60.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/images/google_signin_button.png',
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+  RaisedButton buildAuthScreen() {
+    return RaisedButton(
+      child: Text('Logout'),
+      onPressed: logout,
     );
   }
 
