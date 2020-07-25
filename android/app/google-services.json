@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "493213315720",
+    "firebase_url": "https://fluttereel.firebaseio.com",
+    "project_id": "fluttereel",
+    "storage_bucket": "fluttereel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493213315720:android:77136e8d66daed25f2a53d",
+        "android_client_info": {
+          "package_name": "com.touchcode.snapify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493213315720-mn5g6f3np1q3mqkuh7p5eo7hrqqmfg1l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.touchcode.snapify",
+            "certificate_hash": "ce14930697ea16eb5ea7e581c8132f216bb2efb6"
+          }
+        },
+        {
+          "client_id": "493213315720-kgk8pg2dfilcc17abvq694jnkpe1qsa7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgU4FuuxXmE_F_i-giUqF-3capGhxdrT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493213315720-kgk8pg2dfilcc17abvq694jnkpe1qsa7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
