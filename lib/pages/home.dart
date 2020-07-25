@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:snapify/models/user.dart';
 import 'package:snapify/pages/create_account.dart';
+import 'package:snapify/pages/profile.dart';
+import 'package:snapify/pages/search.dart';
 import 'package:snapify/pages/upload.dart';
 
 final StorageReference storageRef = FirebaseStorage.instance.ref();
@@ -123,6 +125,8 @@ class _HomeState extends State<Home> {
       body: PageView(
         children: <Widget>[
           Upload(currentUser: currentUser),
+          Search(),
+          Profile(profileId: currentUser?.id),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
