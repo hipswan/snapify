@@ -46,6 +46,7 @@ class _HomeState extends State<Home> {
     }, onError: (err) {
       print('Error signing in: $err');
     });
+
     // Reauthenticate user when app is opened
     googleSignIn
         .signInSilently(suppressErrors: false)
