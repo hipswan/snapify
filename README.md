@@ -2,6 +2,10 @@
 
 An effort to clone instagram application.
 
+<p align="center">
+  <img src="https://github.com/hipswan/snapify/blob/master/appimg/splash%20screen.jpg" width="350" title="Splash Screen">
+  <img src="https://github.com/hipswan/snapify/blob/master/appimg/gaccount.jpg" width="350" alt="Google Oauth">
+</p>
 ![splash screen](https://github.com/hipswan/snapify/blob/master/appimg/splash%20screen.jpg)
 ![Google OAuth](https://github.com/hipswan/snapify/blob/master/appimg/gaccount.jpg)
 
