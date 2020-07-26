@@ -32,6 +32,7 @@ class _SearchState extends State<Search>
 
   AppBar buildSearchField() {
     return AppBar(
+      leading: Text(""),
       backgroundColor: Colors.white,
       title: TextFormField(
         controller: searchController,
@@ -80,7 +81,7 @@ class _SearchState extends State<Search>
   }
 
   buildSearchResults() {
-    return FutureBuilder(
+    return FutureBuilder<QuerySnapshot>(
       future: searchResultsFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

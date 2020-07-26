@@ -36,6 +36,7 @@ class _UploadState extends State<Upload>
       source: ImageSource.camera,
       maxHeight: 675,
       maxWidth: 960,
+      preferredCameraDevice: CameraDevice.front,
     );
     setState(() {
       this.file = File(file.path);
@@ -44,7 +45,9 @@ class _UploadState extends State<Upload>
 
   handleChooseFromGallery() async {
     Navigator.pop(context);
-    PickedFile file = await ImagePicker().getImage(source: ImageSource.gallery);
+    PickedFile file = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+    );
     setState(() {
       this.file = File(file.path);
     });
