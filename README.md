@@ -2,6 +2,13 @@
 
 An effort to clone instagram application.
 
+![splash screen](https://github.com/hipswan/snapify/blob/master/appimg/splash%20screen.jpg)
+![Google OAuth](https://github.com/hipswan/snapify/blob/master/appimg/gaccount.jpg)
+
+![Upload](https://github.com/hipswan/snapify/blob/master/appimg/upload.jpg)
+![Search](https://github.com/hipswan/snapify/blob/master/appimg/search.jpg)
+![profile](https://github.com/hipswan/snapify/blob/master/appimg/profile.jpg)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
