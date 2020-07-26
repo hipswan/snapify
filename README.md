@@ -1,6 +1,6 @@
 # snapify
 
-A new Flutter project.
+An effort to clone instagram application.
 
 ## Getting Started
 
