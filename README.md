@@ -4,14 +4,12 @@ An effort to clone instagram application.
 
 <p align="left">
   <img src="https://github.com/hipswan/snapify/blob/master/appimg/splash%20screen.jpg" height="650" width="350" title="Splash Screen">
-  <img src="https://github.com/hipswan/snapify/blob/master/appimg/gaccount.jpg" width="350" alt="Google Oauth">
+  <img src="https://github.com/hipswan/snapify/blob/master/appimg/gaccount.jpg" height="650" width="350" alt="Google Oauth">
+   <img src="https://github.com/hipswan/snapify/blob/master/appimg/upload.jpg" height="650" width="350" alt="Upload">
+  <br/>
+   <img src="https://github.com/hipswan/snapify/blob/master/appimg/search.jpg" height="650" width="350" alt="Search">
+   <img src="https://github.com/hipswan/snapify/blob/master/appimg/profile.jpg" height="650" width="350" alt="profile">
 </p>
-![splash screen](https://github.com/hipswan/snapify/blob/master/appimg/splash%20screen.jpg)
-![Google OAuth](https://github.com/hipswan/snapify/blob/master/appimg/gaccount.jpg)
-
-![Upload](https://github.com/hipswan/snapify/blob/master/appimg/upload.jpg)
-![Search](https://github.com/hipswan/snapify/blob/master/appimg/search.jpg)
-![profile](https://github.com/hipswan/snapify/blob/master/appimg/profile.jpg)
 
 ## Getting Started
 
