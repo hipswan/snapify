@@ -31,6 +31,41 @@ class _TimelineState extends State<Timeline> {
   }
 
   getTimeline() async {
+    QuerySnapshot following = await followingRef
+        .document(widget.currentUser.id)
+        .collection('userFollowing')
+        .getDocuments();
+    following.documents.map((doc) async {
+      print(doc.documentID);
+      QuerySnapshot posts = await postsRef
+          .document(doc.documentID)
+          .collection('userPosts')
+          .getDocuments();
+      posts.documents.map((post) async {
+        DocumentSnapshot ispost = await timelineRef
+            .document(widget.currentUser.id)
+            .collection('timelinePosts')
+            .document(post.documentID)
+            .get();
+        if (!ispost.exists) {
+          await timelineRef
+              .document(widget.currentUser.id)
+              .collection('timelinePosts')
+              .document(post['postId'])
+              .setData(post.data);
+
+          //   .setData({
+          // 'postId': post['postId'],
+          // 'ownerId': post['ownerId'],
+          // 'username': post['username'],
+          // 'location': post['location'],
+          // 'description': post['description'],
+          // 'mediaUrl': post['mediaUrl'],
+          // 'likes': post['likes'],
+        }
+      });
+    });
+
     QuerySnapshot snapshot = await timelineRef
         .document(widget.currentUser.id)
         .collection('timelinePosts')
