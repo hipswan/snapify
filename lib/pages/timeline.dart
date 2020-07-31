@@ -26,22 +26,23 @@ class _TimelineState extends State<Timeline> {
   @override
   void initState() {
     super.initState();
+    setPostfromFollowers();
     getTimeline();
     getFollowing();
   }
 
-  getTimeline() async {
+  setPostfromFollowers() async {
     QuerySnapshot following = await followingRef
         .document(widget.currentUser.id)
         .collection('userFollowing')
         .getDocuments();
-    following.documents.map((doc) async {
-      print(doc.documentID);
+    following.documents.forEach((doc) async {
       QuerySnapshot posts = await postsRef
           .document(doc.documentID)
           .collection('userPosts')
           .getDocuments();
-      posts.documents.map((post) async {
+      posts.documents.forEach((post) async {
+        // print('${post['postId']}');
         DocumentSnapshot ispost = await timelineRef
             .document(widget.currentUser.id)
             .collection('timelinePosts')
@@ -53,19 +54,21 @@ class _TimelineState extends State<Timeline> {
               .collection('timelinePosts')
               .document(post['postId'])
               .setData(post.data);
-
-          //   .setData({
-          // 'postId': post['postId'],
-          // 'ownerId': post['ownerId'],
-          // 'username': post['username'],
-          // 'location': post['location'],
-          // 'description': post['description'],
-          // 'mediaUrl': post['mediaUrl'],
-          // 'likes': post['likes'],
         }
       });
     });
+    print(
+        'User following count ${following.documents.map((doc) => doc.documentID)}');
 
+    QuerySnapshot userfeedposts = await timelineRef
+        .document(widget.currentUser.id)
+        .collection('timelinePosts')
+        .getDocuments();
+
+    print('Timeline was called ${userfeedposts.documents.length}');
+  }
+
+  getTimeline() async {
     QuerySnapshot snapshot = await timelineRef
         .document(widget.currentUser.id)
         .collection('timelinePosts')
@@ -94,12 +97,32 @@ class _TimelineState extends State<Timeline> {
     } else if (posts.isEmpty) {
       return buildUsersToFollow();
     } else {
-      return ListView(children: posts);
+      return buildUserPost();
     }
   }
 
+  buildUserPost() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: timelineRef
+            .document(widget.currentUser.id)
+            .collection('timelinePosts')
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return circularProgress();
+          }
+          posts = snapshot.data.documents
+              .map((doc) => Post.fromDocument(doc))
+              .toList();
+          return ListView(
+            children: posts,
+          );
+        });
+  }
+
   buildUsersToFollow() {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot>(
       stream:
           usersRef.orderBy('timestamp', descending: true).limit(30).snapshots(),
       builder: (context, snapshot) {
